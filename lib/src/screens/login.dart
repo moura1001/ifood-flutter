@@ -16,9 +16,10 @@ class _LoginState extends State<Login> {
   var email = TextEditingController();
   var password = TextEditingController();
 
-  bool loading = false;
+  bool loading;
 
   Widget build(BuildContext context) {
+    loading = false;
     return ListView(
       children: <Widget>[
         Container(

@@ -67,4 +67,16 @@ class RestauranteController {
       print(e);
     }
   }
+
+    Future updateStatus(int idRestaurante) async {
+    try {
+      var response = await dio.put("${ENV.BASE_URL}/restaurante/status", 
+      data: {
+        "id_restaurante": idRestaurante
+      },);
+      return response.data;
+    } catch (e) {
+      print(e);
+    }
+  }
 }

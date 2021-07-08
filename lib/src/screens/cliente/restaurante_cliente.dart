@@ -71,7 +71,7 @@ class _RestauranteClienteState extends State<RestauranteCliente> {
                 subtitle: Text("$descricao"),
                 trailing: Icon(Icons.add_shopping_cart),
                 onTap: () {
-                  if(blocCart.items == null || idRestaurante == blocCart.items.first.restaurantId)
+                  if(blocCart.items == null || blocCart.items.isEmpty || idRestaurante == blocCart.items.first.restaurantId)
                     blocCart.addItem(CartItem(comidaNome, preco, idComida, idRestaurante, 1));
                   
                   else

@@ -2,6 +2,7 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:ifood_app/src/controllers/cart_controller.dart';
 import 'package:ifood_app/src/models/cart_item.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:ifood_app/src/validation/address_validator.dart';
 
 class BlocCart extends BlocBase {
   var _cartItems = BehaviorSubject<List<CartItem>>();
@@ -39,23 +40,30 @@ class BlocCart extends BlocBase {
     _cartItems.sink.add(items);
   }
 
-  void sendPedido(
+  Future sendPedido(
       double total, int idRestaurante, int idCliente, String endereco, String tipoEntrega) async {
+    
+    if(!AddressValidator.validate(endereco))
+      return {"error": "Endereço inválido."};
+    
     CartController cartController = CartController();
     List copy = List.from(items);
 
     try {
-      var res = await cartController.createPedido(idRestaurante, idCliente, tipoEntrega);
+      var res = await cartController.createPedido(idRestaurante, idCliente, tipoEntrega, endereco);
+
+      if(res["pedido"].isEmpty)
+        return res;
 
       copy.forEach((item) async {
-      try {
-        var newfood = await cartController.insertFood(
-            res["pedido"]["id"], item.id, item.amount, item.price);
-        print("novacomida: $newfood");
-      } catch (err) {
-        print(err);
-      }
-    });
+        try {
+          var newfood = await cartController.insertFood(
+              res["pedido"]["id"], item.id, item.amount, item.price);
+          print("novacomida: $newfood");
+        } catch (err) {
+          print(err);
+        }
+      });
 
       var preco = await cartController.totalPrice(res["pedido"]["id"], total, tipoEntrega);
       print(preco);
@@ -66,6 +74,8 @@ class BlocCart extends BlocBase {
     } catch (err) {
       print(err);
     }
+
+    return {};
   }
 
   void clearList() {

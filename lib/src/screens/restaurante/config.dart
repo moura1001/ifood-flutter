@@ -16,13 +16,16 @@ class Configs extends StatefulWidget {
 }
 
 class _ConfigsState extends State<Configs> {
-  String dropdownStatus = "Aberto";
+  bool aberto;
+  String dropdownStatus;
   String dropdownEntrega;
 
   RestauranteController restauranteController = RestauranteController();
   @override
   Widget build(BuildContext context) {
   dropdownEntrega = widget.usuario["tipo_entrega"];
+  aberto = widget.usuario["aberto"];
+  dropdownStatus = widget.usuario["aberto"] ? "Aberto" : "Fechado";
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -83,7 +86,7 @@ class _ConfigsState extends State<Configs> {
               ),
               DropdownButton<String>(
                 hint: Text("Escolha", style: TextStyles.styleBold),
-                value: "Aberto",
+                value: dropdownStatus,
                 icon: Icon(Icons.arrow_drop_down),
                 iconSize: 24,
                 elevation: 16,
@@ -93,7 +96,14 @@ class _ConfigsState extends State<Configs> {
                   height: 2,
                   color: Colors.deepPurpleAccent,
                 ),
-                onChanged: (String newValue) {},
+                onChanged: (String newValue) {
+                  restauranteController.updateStatus(widget.idRestaurante);
+                  setState(() {
+                    aberto = !aberto;
+                    dropdownStatus = newValue;
+                    widget.usuario["aberto"] = aberto;
+                  });
+                },
                 items: <String>['Aberto', 'Fechado']
                     .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(

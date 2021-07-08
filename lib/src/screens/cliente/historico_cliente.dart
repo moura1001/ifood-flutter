@@ -28,6 +28,7 @@ class _HistoricoClienteState extends State<HistoricoCliente> {
             var precoTotal = snapshot.data["pedidos"][index]["preco_cliente"];
             String nome = snapshot.data["pedidos"][index]["nome"];
             String data = snapshot.data["pedidos"][index]["data"];
+            String enderecoEntrega = snapshot.data["pedidos"][index]["endereco_entrega"];
             var idPedido = snapshot.data["pedidos"][index]["id_pedido"];
             // String descricao = snapshot.data["cardapio"][index]["descricao"];
             // var preco = snapshot.data["cardapio"][index]["preco"];
@@ -48,7 +49,7 @@ class _HistoricoClienteState extends State<HistoricoCliente> {
                             Text("Total: RS $precoTotal"),
                           ],
                         ),
-                        subtitle: Text("$data"),
+                        subtitle: Text("$data\n"+"Entrega: $enderecoEntrega"),
                       ),
                       children: <Widget>[
                         FutureBuilder(

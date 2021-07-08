@@ -4,13 +4,14 @@ import 'package:ifood_app/src/env/env.dart';
 class CartController {
   Dio dio = Dio();
   
-  Future createPedido(idRestaurante, idCliente, String tipoEntrega) async {
+  Future createPedido(idRestaurante, idCliente, String tipoEntrega, String enderecoEntrega) async {
     try {
       var response = await dio.post("${ENV.BASE_URL}/pedido/criar", 
       data: {
         "id_restaurante": idRestaurante,
         "id_cliente": idCliente,
-        "tipo_entrega": tipoEntrega
+        "tipo_entrega": tipoEntrega,
+        "endereco_entrega": enderecoEntrega
       });
       return response.data;
     } catch (e) {

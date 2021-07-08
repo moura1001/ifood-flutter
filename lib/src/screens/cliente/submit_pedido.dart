@@ -2,6 +2,7 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import "package:flutter/material.dart";
 import 'package:ifood_app/src/blocs/bloc_cart.dart';
 import 'package:ifood_app/src/controllers/restaurante_controller.dart';
+import 'package:ifood_app/src/screens/alert_dialog.dart';
 
 class SubmitPedido extends StatefulWidget {
   final double valorTotal;
@@ -110,12 +111,24 @@ class _SubmitPedidoState extends State<SubmitPedido> {
                         onPressed: () {
                           blocCart.sendPedido(blocCart.valueTotal(),
                               widget.idRestaurante, widget.idCliente,
-                              enderecoController.text,
-                              entrega);
-                            Navigator.pop(context);
-                            Navigator.pop(context);
-                            Navigator.pop(context);
-                          //Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => HomeCliente()));
+                              enderecoController.text, entrega)
+                              .then((res) {
+
+                                if(res.containsKey("error"))
+                                  showInfoDialog(
+                                    context,
+                                    "Erro",
+                                    res["error"],
+                                    "Entendi",
+                                  );
+                              
+                                else{
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                  //Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => HomeCliente()));
+                                }
+                              });
                         },
                         color: Color(0xffDF4723),
                         textColor: Colors.white,
