@@ -156,7 +156,7 @@ class SignupTabs{
                             enderecoController.text)
                         .then((res) {
                       
-                      if(!res.containsKey("usuario"))
+                      if(res.containsKey("error"))
                         showInfoDialog(
                           context,
                           "Erro",
@@ -300,7 +300,7 @@ class SignupTabs{
                             categoriaController.text)
                         .then((res) {
                       
-                      if(!res.containsKey("usuario"))
+                      if(res.containsKey("error"))
                         showInfoDialog(
                           context,
                           "Erro",
